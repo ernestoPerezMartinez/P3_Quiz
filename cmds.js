@@ -190,9 +190,9 @@ exports.playCmd = rl => {
         const playOne = () => {
             if (toBeResolved.length === 0) {
 
-                log('No hay nada más que preguntar', 'black');
-                log(`Fin del juego. Aciertos: ${score} `, 'black');
-                biglog(`${score}`, 'magenta');
+                log('No hay más preguntas', 'black');
+                log(`Fin del juego `, 'black');
+                biglog(`¡ Has acertado ${score} de ${model.count()} ! `, 'green');
                 rl.prompt();
 
             }
@@ -207,13 +207,16 @@ exports.playCmd = rl => {
                     toBeResolved.splice(iden, 1);
 
                     if (answer.trim().toLowerCase() === quiz.answer.toLowerCase()) {
-                        log(`CORRECTO - Lleva ${++score} aciertos`, 'green');
+                        log(` Respuestas correctas: ${++score}`, 'green');
                         playOne();
                     }
                     else {
-                        log(`INCORRECTO`, 'red');
-                        log(`Fin del juego. Aciertos: ${score}`, 'black');
-                        biglog(`${score}`, 'magenta');
+                        log('  Respuesta incorrecta...', 'red');
+
+                        log('  Fin del juego', 'black');
+
+                        biglog(`¡ Has acertado ${score} de ${model.count()} !`, 'green');
+
                         rl.prompt();
                     }
 
