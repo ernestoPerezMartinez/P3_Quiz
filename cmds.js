@@ -142,6 +142,8 @@ exports.editCmd = (rl, id) => {
 
 exports.testCmd = (rl, id) => {
 
+    let testear;
+
     if (typeof id === "undefined") {
         errorlog(`Falta el parámetro id.`);
         rl.prompt();
@@ -150,7 +152,7 @@ exports.testCmd = (rl, id) => {
             const quiz = model.getByIndex(id);
 
             rl.question(`${colorize(quiz.question, 'red')}: `, answer => {
-                if (answer.trim().toLowerCase() === quiz.answer.toLowerCase()) {
+                if (answer.toLowerCase().trim() === quiz.answer.toLowerCase()) {
                     log(`Su respuesta es correcta.`);
                     biglog(`CORRECTO`, 'green');
                     rl.prompt();
@@ -179,57 +181,58 @@ exports.playCmd = rl => {
 
 
 
-        let score = 0;
-        let toBeResolved = [];
+    let score = 0;
+    let toBeResolved = [];
 
 
-        for (var i = 0; i < model.count(); i++) {
-            toBeResolved.push(i);
-        }
 
-        const playOne = () => {
-            if (toBeResolved.length === 0) {
+    for (var i = 0; i < model.count(); i++) {
+        toBeResolved.push(i);
+    }
 
-                log('No hay más preguntas', 'black');
-                log(`Fin del juego `, 'black');
-                biglog(`¡ Has acertado ${score} de ${model.count()} ! `, 'green');
-                rl.prompt();
+    const playOne = () => {
+        if (toBeResolved.length === 0) {
 
-            }
-            else {
-
-                let iden = Math.round(Math.random() * (toBeResolved.length) - 0.5);
-
-                const quiz = model.getByIndex(toBeResolved[iden]);
-
-                rl.question(`${colorize(quiz.question, 'red')}`, answer => {
-
-                    toBeResolved.splice(iden, 1);
-
-                    if (answer.trim().toLowerCase() === quiz.answer.toLowerCase()) {
-                        log(` Respuestas correctas: ${++score}`, 'green');
-                        playOne();
-                    }
-                    else {
-                        log('  Respuesta incorrecta...', 'red');
-
-                        log('  Fin del juego', 'black');
-
-                        biglog(`¡ Has acertado ${score} de ${model.count()} !`, 'green');
-
-                        rl.prompt();
-                    }
-
-                });
-
-
-            };
+            log('No hay nada más que preguntar');
+            log(`Fin del juego. Aciertos: ${score} `);
+            biglog(`${score}`, 'magenta');
+            rl.prompt();
 
         }
-        playOne();
+        else {
+
+            let iden = Math.round(Math.random() * (toBeResolved.length) - 0.5);
+
+            const quiz = model.getByIndex(toBeResolved[iden]);
 
 
-    };
+
+            rl.question(`${colorize(quiz.question, 'red')}`, answer => {
+
+                toBeResolved.splice(iden, 1);
+
+                if (answer.toLowerCase().trim() === quiz.answer.trim().toLowerCase()) {
+                    log(` CORRECTO - Lleva ${++score} aciertos`);
+                    playOne();
+                }
+                else {
+                    log(` INCORRECTO. `);
+                    log(` Fin del juego. Aciertos: ${score}`);
+                    biglog(`${score}`, 'magenta');
+                    rl.prompt();
+                }
+
+            });
+
+
+        };
+
+    }
+    playOne();
+
+
+};
+
 exports.creditsCmd = rl => {
     log('Autores de la práctica:');
     log('Ernesto Pérez Martínez de Tejada', 'green');
