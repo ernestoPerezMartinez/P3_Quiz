@@ -193,31 +193,32 @@ exports.playCmd = rl => {
     const playOne = () => {
         if (toBeResolved.length === 0) {
 
-            log('No hay nada más que preguntar');
-            log(`Fin del juego. Aciertos: ${score} `);
+            log('No hay nada más que preguntar', 'black');
+            log(`Fin del juego. Aciertos: ${score} `, 'black');
             biglog(`${score}`, 'magenta');
             rl.prompt();
 
         }
         else {
 
-            let iden = Math.round(Math.random() * (toBeResolved.length) - 0.5);
+            let iden = Math.floor(Math.random() * (toBeResolved.length));
 
             const quiz = model.getByIndex(toBeResolved[iden]);
 
+            let jug;
+            let perd;
 
-
-            rl.question(`${colorize(quiz.question, 'red')}`, answer => {
+            rl.question(`${colorize(quiz.question + "? ", 'red')}`, answer => {
 
                 toBeResolved.splice(iden, 1);
 
-                if (answer.toLowerCase().trim() === quiz.answer.trim().toLowerCase()) {
-                    log(` CORRECTO - Lleva ${++score} aciertos`);
+                if (answer.toLowerCase().trim() === quiz.answer.toLowerCase()) {
+                    log(` CORRECTO - Lleva ${++score} aciertos `, 'green');
                     playOne();
                 }
                 else {
-                    log(` INCORRECTO. `);
-                    log(` Fin del juego. Aciertos: ${score}`);
+                    log(` INCORRECTO. `, 'red');
+                    log(` Fin del juego. Aciertos: ${score}`, 'black');
                     biglog(`${score}`, 'magenta');
                     rl.prompt();
                 }
