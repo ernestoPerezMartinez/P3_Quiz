@@ -293,9 +293,7 @@ exports.testCmd = (rl, id) => {
 
 
 		    		else{
-					log('Fin del juego', 'red');
-		    			console.log('Respuesta incorrecta.', 'red');
-		    			log(`Has acertado ${score}`, 'magenta')
+                        console.log(`Respuesta incorrecta. Fin del examen. Aciertos: ${score}`);
 		    		}
 				});
 		    })
