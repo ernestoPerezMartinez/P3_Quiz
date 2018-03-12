@@ -293,6 +293,7 @@ exports.testCmd = (rl, id) => {
 
 
 		    		else{
+		    		    console.log(`Incorrecta`);
                         console.log(` Fin del examen. Aciertos: ${score}`);
                         rl.prompt();
 		    		}
