@@ -246,7 +246,7 @@ exports.testCmd = (rl, id) => {
  exports.playCmd = rl => {
 
 	let score = 0;
-	let toBeResolved = [];
+	let toBeResolved = new Array();
 
 	let i = 1;
 	models.quiz.findAll().each(quiz => {
@@ -261,7 +261,7 @@ exports.testCmd = (rl, id) => {
 		if(toBeResolved.length === 0){
 
 			log('No hay mas preguntas','black');
-			log('Fin del juego', 'black');
+			log('Fin del quiz, Aciertos: ${score}', 'black');
 			biglog(` ${score}`, 'magenta');
 			rl.prompt();
 
@@ -293,8 +293,8 @@ exports.testCmd = (rl, id) => {
 
 
 		    		else{
-		    		    console.log(`Incorrecta`);
-                        console.log(` Fin del examen. Aciertos: ${score}`);
+
+                        console.log(` Incorrecta. Fin del examen. Aciertos: ${score}`);
                         rl.prompt();
 		    		}
 				});
@@ -309,17 +309,18 @@ exports.testCmd = (rl, id) => {
 			.catch(Sequelize.ValidationError, error => {
 				errorlog('El quiz es erroneo:');
 				error.errors.forEach(({message}) => errorlog(message));
-				rl.prompt();
+
 			})
-
-
-			.catch(error => {
-				errorlog(error.message);
-				rl.prompt();
-			});
+                .catch(error => {
+                    errorlog(error.message);
+                })
+                .then(() => {
+                    rl.prompt();
+                });
 
 		}
 	};
+     playOne();
 }
 
 
