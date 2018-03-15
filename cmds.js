@@ -260,9 +260,9 @@ exports.testCmd = (rl, id) => {
 	const playOne = () => {
 		if(toBeResolved.length === 0){
 
-			log('No hay mas preguntas','black');
-			log('Fin del juego', 'black');
-			biglog(` ${score}`, 'magenta');
+            log("No hay más preguntas.");
+            log(`Fin del quiz. Aciertos: ${score}`);
+            biglog(`${score}`,'green');
 			rl.prompt();
 
 		}
@@ -293,9 +293,8 @@ exports.testCmd = (rl, id) => {
 
 
 		    		else{
-					log('Fin del juego', 'red');
-		    		log('Respuesta incorrecta.', 'red');
-		    			log(`Has acertado ${score}`, 'magenta')
+                        console.log(`Respuesta incorrecta. Fin del examen. Aciertos: ${score}`);
+                        rl.prompt();
 		    		}
 				});
 		    })
