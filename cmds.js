@@ -251,7 +251,7 @@ exports.testCmd = (rl, id) => {
 	let i = 1;
 	models.quiz.findAll().each(quiz => {
 		toBeResolved.push(i++);
-		let thereWere = toBeResolved.length;
+		let hubo = toBeResolved.length;
     }).
     then(() => {
     	playOne();
