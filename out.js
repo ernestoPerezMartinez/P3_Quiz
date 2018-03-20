@@ -36,7 +36,7 @@ const log = (msg, color) => {
  * @param msg Texto a escribir
  * @param color Color del texto
  */
-
+//constante letras grandes
 const biglog = (msg, color) => {
 
     log(figlet.textSync(msg, { horizontalLayout: 'full' }), color);
@@ -50,7 +50,7 @@ const biglog = (msg, color) => {
  *
  */
 
-
+//constante de error
 const errorlog = (emsg) => {
 
     console.log(`${colorize("Error", "red")}: ${colorize(colorize(emsg, "red"), "bgYellowBright")}`);

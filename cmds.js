@@ -109,6 +109,7 @@ const makeQuestion = (rl, text) => {
  * @param rl Objeto readLine usado para implementar el CLI.
  */
 
+//añadir pregunta
 exports.addCmd = rl => {
 
     makeQuestion(rl, 'Introduzca una pregunta: ')
@@ -136,6 +137,7 @@ exports.addCmd = rl => {
 });
 
 };
+//borrar pregunta
 exports.deleteCmd = (rl, id) => {
 
     validateId(id)
@@ -202,32 +204,42 @@ exports.editCmd = (rl, id) => {
 
 
 };
+//metodo test
 
 exports.testCmd = (rl, id) => {
 
+
     var testea=0;
+
     var juega= 0;
+
     var count;
 
     validateId(id)
+
         .then(id => models.quiz.findById(id))
         .then(quiz => {
             if(!quiz){
                 throw new Error(`No existe un quiz asociado al id=${id}`);
             }
+
             return makeQuestion(rl, `${colorize(quiz.question + "? ", 'red')} `)
+
                 .then(answer => {
+
                     if(answer.trim().toLowerCase() === quiz.answer.toLowerCase()){
                         log('Respuesta correcta.', 'green');
                         biglog('Correcto','green');
                     }
                     else{
+
                         log('Respuesta incorrecta.', 'red');
                         biglog('Incorrecto','red')
                     }
                 });
         })
         .then(() => {
+
             rl.prompt();
         })
         .catch(Sequelize.ValidationError, error => {
@@ -236,17 +248,18 @@ exports.testCmd = (rl, id) => {
             rl.prompt();
         })
         .catch(error => {
+
             errorlog(error.message);
             rl.prompt();
         });
 
 };
 
-
+//metodo para poder jugar
  exports.playCmd = rl => {
 
-	let score = 0;
-	let toBeResolved = [];
+	let score = 0; //inicializamos a 0
+	let toBeResolved = []; //creacion array
 
 	let i = 1;
 	models.quiz.findAll().each(quiz => {
@@ -260,7 +273,7 @@ exports.testCmd = (rl, id) => {
 	const playOne = () => {
 		if(toBeResolved.length === 0){
 
-            log("No hay más preguntas.");
+            log("No hay más preguntas."); //caso no hay mas preguntas
             log(`Fin del quiz. Aciertos: ${score}`);
             biglog(`${score}`,'green');
 			rl.prompt();
@@ -273,17 +286,21 @@ exports.testCmd = (rl, id) => {
 			let jug;
 			let perd=0;
 
-			validateId(iden)
+
+
+
+
+            validateId(iden)
 
 		    .then(iden => models.quiz.findById(toBeResolved[iden-1]))
 
 		    .then(quiz => {
 
 		        if(!quiz){
-		    		throw new Error(`No existe un quiz asociado al id=${r}`);
+		    		throw new Error(`No existe un quiz asociado al id=${iden}`); //no existe quiz
 		    	}
 
-		    	return makeQuestion(rl, `  ${colorize(quiz.question + "? ", 'red')}`)
+		    	return makeQuestion(rl, `  ${colorize(quiz.question + "? ", 'red')}`) //question
 		    	.then(answer => {
 		    		toBeResolved.splice(iden-1, 1);
 		    		if(answer.trim().toLowerCase() === quiz.answer.toLowerCase()){
@@ -297,7 +314,7 @@ exports.testCmd = (rl, id) => {
                         rl.prompt();
 		    		}
 				});
-		    })
+		    })  
 
 
 	        .then(() => {
